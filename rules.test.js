@@ -1,32 +1,39 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { WIDTH, HEIGHT, createInitialState, denOwner, trapOwner, isRiver, phaseForTurn, effectiveRank, legalMoves, movePiece } from './rules.js';
+import { WIDTH, HEIGHT, createInitialState, isValidRiverLayout, denOwner, trapOwner, isRiver, effectiveRank, legalMoves, movePiece } from './rules.js';
 
 const piece = (team, rank, x, y, wounds = 0) => ({ id: `${team}-${rank}`, team, rank, x, y, wounds });
 const has = (moves, x, y) => moves.some(move => move.x === x && move.y === y);
 const tile = (x, y, kind) => [{ x, y, kind }];
 
-test('9×9 layout places all pieces and special tiles on separate valid squares on both shores', () => {
+test('9×9 layout scatters one of each special terrain and two six-cell rivers across the middle', () => {
   assert.equal(WIDTH, 9); assert.equal(HEIGHT, 9);
+  const layouts = new Set();
   for (let seed = 0; seed < 30; seed++) {
     let n = seed + 1;
     const rng = () => ((n = (n * 1664525 + 1013904223) >>> 0) / 4294967296);
-    const { pieces, specialTiles } = createInitialState(rng);
-    assert.equal(pieces.length, 16); assert.equal(specialTiles.length, 16);
+    const { pieces, specialTiles, riverTiles } = createInitialState(rng);
+    assert.equal(pieces.length, 16); assert.equal(specialTiles.length, 4);
+    assert.ok(isValidRiverLayout(riverTiles));
+    assert.equal(riverTiles.length, 12);
+    layouts.add(riverTiles.map(t => `${t.x},${t.y}`).sort().join('|'));
     const occupied = new Set();
     for (const entry of [...pieces, ...specialTiles]) {
       assert.ok(entry.x >= 0 && entry.x < 9 && entry.y >= 0 && entry.y < 9);
-      assert.ok(!isRiver(entry.x, entry.y) && !denOwner(entry.x, entry.y) && !trapOwner(entry.x, entry.y));
+      assert.ok(!isRiver(entry.x, entry.y, riverTiles) && !denOwner(entry.x, entry.y) && !trapOwner(entry.x, entry.y));
       const key = `${entry.x},${entry.y}`;
       assert.ok(!occupied.has(key)); occupied.add(key);
     }
     assert.ok(pieces.filter(p => p.team === 'red').every(p => p.y <= 2));
     assert.ok(pieces.filter(p => p.team === 'blue').every(p => p.y >= 6));
+    assert.equal(specialTiles.filter(t => t.y <= 2).length, 2);
+    assert.equal(specialTiles.filter(t => t.y >= 6).length, 2);
     for (const kind of ['jungle', 'home', 'mountain', 'spikes']) {
-      assert.equal(specialTiles.filter(t => t.kind === kind && t.y <= 2).length, 2);
-      assert.equal(specialTiles.filter(t => t.kind === kind && t.y >= 6).length, 2);
+      assert.equal(specialTiles.filter(t => t.kind === kind).length, 1);
     }
   }
+  assert.ok(layouts.size > 1);
+  assert.ok(!isValidRiverLayout([{ x: 1, y: 3 }]));
 });
 
 test('terrain modifiers and enemy net trap rank zero', () => {
@@ -40,32 +47,28 @@ test('terrain modifiers and enemy net trap rank zero', () => {
   assert.equal(effectiveRank(piece('blue', 8, 2, 0)), 8);
 });
 
-test('two days, night, and full moon repeat with phase strengths', () => {
-  assert.deepEqual(Array.from({ length: 8 }, (_, i) => phaseForTurn(i + 1)), ['day', 'day', 'night', 'fullmoon', 'day', 'day', 'night', 'fullmoon']);
+test('strength no longer changes with the turn number', () => {
   const wolf = piece('blue', 3, 0, 6);
-  assert.equal(effectiveRank(wolf, [], 3), 5);
-  assert.equal(effectiveRank(wolf, [], 4), 6);
-  assert.equal(effectiveRank(piece('blue', 6, 0, 6), [], 3), 7);
+  assert.equal(effectiveRank(wolf), 3);
+  assert.equal(effectiveRank(wolf, []), 3);
 });
 
-test('positive terrain grants exact two-square jumps in eight directions; full moon wolf jumps three', () => {
+test('positive terrain grants exact two-square jumps in eight directions, including a spike landing', () => {
   const tiger = piece('blue', 6, 4, 6);
-  const tiles = tile(4, 6, 'jungle');
-  const moves = legalMoves([tiger], tiger, tiles, 1);
+  const tiles = [...tile(4, 6, 'jungle'), ...tile(2, 6, 'spikes')];
+  const moves = legalMoves([tiger], tiger, tiles);
   for (const [x, y] of [[2, 6], [6, 6], [4, 4], [2, 8], [6, 8]]) assert.ok(has(moves, x, y));
   assert.ok(!has(moves, 4, 8)); // Hang của chính mình vẫn bị cấm.
   assert.ok(!has(moves, 6, 7));
+  assert.equal(movePiece([tiger, piece('red', 1, 8, 0)], tiger.id, 2, 6, tiles).wounded, true);
   const wolf = piece('blue', 3, 4, 5);
-  assert.ok(has(legalMoves([wolf], wolf, [], 4), 7, 8));
-  assert.ok(!has(legalMoves([wolf], wolf, [], 3), 7, 8));
+  assert.ok(!has(legalMoves([wolf], wolf), 7, 8));
 });
 
-test('at night only a cat captures a rat; jungle shields elephant from rat', () => {
+test('ordinary capture rules always apply; jungle shields elephant from rat', () => {
   const rat = piece('red', 1, 0, 6), dog = piece('blue', 4, 0, 7), cat = piece('blue', 2, 1, 6);
-  assert.ok(has(legalMoves([dog, rat], dog, [], 1), 0, 6));
-  assert.ok(!has(legalMoves([dog, rat], dog, [], 3), 0, 6));
-  assert.ok(has(legalMoves([cat, rat], cat, [], 3), 0, 6));
-  assert.ok(has(legalMoves([dog, rat], dog, [], 4), 0, 6));
+  assert.ok(has(legalMoves([dog, rat], dog), 0, 6));
+  assert.ok(has(legalMoves([cat, rat], cat), 0, 6));
   const elephant = piece('red', 8, 0, 6), blueRat = piece('blue', 1, 0, 7);
   assert.ok(has(legalMoves([blueRat, elephant], blueRat), 0, 6));
   assert.ok(!has(legalMoves([blueRat, elephant], blueRat, tile(0, 6, 'jungle')), 0, 6));
@@ -99,4 +102,14 @@ test('river, dens and enemy traps keep their original constraints', () => {
   assert.equal(movePiece([redRat, piece('blue', 2, 0, 6)], redRat.id, 4, 8).winner, 'red');
   const trapped = piece('blue', 8, 3, 0), attackingCat = piece('red', 2, 2, 0);
   assert.ok(has(legalMoves([trapped, attackingCat], attackingCat), 3, 0));
+});
+
+test('river movement uses the randomized layout rather than a fixed map', () => {
+  const riverTiles = [2, 3, 5, 6].flatMap(x => [3, 4, 5].map(y => ({ x, y })));
+  assert.ok(isValidRiverLayout(riverTiles));
+  const lion = piece('blue', 7, 2, 6);
+  assert.ok(has(legalMoves([lion], lion, [], riverTiles), 2, 2));
+  assert.ok(!has(legalMoves([lion], lion), 2, 2));
+  const swimmingRat = piece('red', 1, 2, 4);
+  assert.ok(!has(legalMoves([lion, swimmingRat], lion, [], riverTiles), 2, 2));
 });

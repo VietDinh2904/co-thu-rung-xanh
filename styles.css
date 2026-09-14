@@ -20,3 +20,10 @@
 .square.spikes .terrain-label{color:#894d3c}
 .wound-mark{position:absolute;right:-8%;top:-8%;padding:1px 3px;border-radius:8px;background:#fff8ea;color:#a94b41;font-size:9px;font-weight:900;box-shadow:0 1px 3px #6b4d3b44}
 @media(max-width:740px){.special-art{font-size:clamp(17px,5.2vw,31px)}.square.jungle .terrain-label,.square.home .terrain-label,.square.mountain .terrain-label,.square.spikes .terrain-label{font-size:6px}.piece-emoji{font-size:clamp(18px,4.8vw,32px)}.piece-name{font-size:clamp(6px,1.5vw,8px)}.piece-rank{font-size:7px}.wound-mark{font-size:7px}}
+
+/* Bậc hiện tại luôn nổi trên hình quân, mã màu theo thay đổi sức mạnh. */
+.piece .piece-rank,.piece.weakened .piece-rank{z-index:7;top:-11%;left:-15%;width:clamp(20px,40%,30px);height:clamp(20px,40%,30px);aspect-ratio:1;border:2px solid white;border-radius:50%;font-size:clamp(12px,1.25vw,17px);line-height:1;box-shadow:0 2px 5px #283e2f66;text-shadow:none}
+.piece .piece-rank.rank-base{background:#fff9e9;color:#254434}
+.piece .piece-rank.rank-up{background:#168847;color:#fff}
+.piece .piece-rank.rank-down,.piece.weakened .piece-rank.rank-down{background:#c93634;color:#fff}
+@media(max-width:740px){.piece .piece-rank,.piece.weakened .piece-rank{width:clamp(17px,39%,22px);height:clamp(17px,39%,22px);font-size:12px;top:-10%;left:-18%;border-width:1.5px}}
