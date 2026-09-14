@@ -1,4 +1,4 @@
-import { ANIMALS, WIDTH, HEIGHT, isRiver, isInside, isValidRiverLayout, trapOwner, denOwner, specialAt, effectiveRank, createInitialState, pieceAt, legalMoves, movePiece, SPECIAL_KINDS } from './rules.js';
+import { ANIMALS, WIDTH, HEIGHT, isRiver, isInside, isValidRiverLayout, trapOwner, denOwner, specialAt, effectiveRank, createInitialState, pieceAt, legalMoves, movePiece, SPECIAL_KINDS } from './rules.js?v=river-20260914';
 
 const terrainDrawings = {
   jungle: '<span class="special-art" aria-hidden="true">🌳</span><span class="terrain-label">RỪNG</span>',
