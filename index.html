@@ -59,7 +59,7 @@
         <section class="board-section" aria-label="Bàn cờ thú">
           <div class="board-top-label"><span class="mountain-scene" aria-hidden="true">⛰</span><span>HANG CỦA ĐỘI ĐỎ</span><span class="mountain-scene" aria-hidden="true">⛰</span></div>
           <div class="board-frame">
-            <div class="board" id="board" role="grid" aria-label="Bàn cờ 7 cột, 9 hàng"></div>
+            <div class="board" id="board" role="grid" aria-label="Bàn cờ 9 cột, 9 hàng"></div>
           </div>
           <div class="board-bottom-label"><span class="mountain-scene" aria-hidden="true">⛰</span><span>HANG CỦA ĐỘI XANH</span><span class="mountain-scene" aria-hidden="true">⛰</span></div>
           <p class="board-tip" id="statusMessage" role="status" aria-live="polite">Chạm vào một quân Xanh để bắt đầu cuộc phiêu lưu.</p>
@@ -71,6 +71,9 @@
             <h2>Chơi thế nào?</h2>
             <div class="guide-item"><span class="guide-icon leaf-icon">↔</span><div><strong>Di chuyển</strong><p>Mỗi lượt đi 1 ô ngang hoặc dọc. Chọn quân để thấy nước đi hợp lệ.</p></div></div>
             <div class="guide-item"><span class="guide-icon water-icon">〰</span><div><strong>Vượt sông</strong><p>Chuột bơi được. Sư tử và Hổ có thể nhảy qua sông nếu không có Chuột cản đường.</p></div></div>
+            <div class="guide-item"><span class="guide-icon leaf-icon">🌳</span><div><strong>Địa hình đặc biệt</strong><p>Rừng, Nhà, Núi đổi bậc sức mạnh. Quân được cộng bậc trên ô có thể nhảy 2 ô theo 8 hướng.</p></div></div>
+            <div class="guide-item"><span class="guide-icon trap-icon">🌵</span><div><strong>Chông</strong><p>Thú bậc 6 trở lên dẫm chông bị thương vĩnh viễn −1 mỗi lần.</p></div></div>
+            <div class="guide-item"><span class="guide-icon cave-icon">🌕</span><div><strong>Ngày và đêm</strong><p>Hai lượt ngày, một lượt đêm, một lượt trăng tròn rồi lặp lại. Trăng tròn Sói nhảy 3 ô.</p></div></div>
             <div class="guide-item"><span class="guide-icon trap-icon">✳</span><div><strong>Cẩn thận bẫy!</strong><p>Thú sa vào bẫy đối phương sẽ mất sức mạnh cho đến khi thoát ra.</p></div></div>
             <div class="guide-item"><span class="guide-icon cave-icon">⌂</span><div><strong>Đến hang địch</strong><p>Vào hang đối phương hoặc bắt hết thú của họ để thắng.</p></div></div>
           </div>
@@ -89,11 +92,16 @@
     <div class="dialog-header"><div><span class="card-kicker">CẨM NANG THÁM HIỂM</span><h2 id="rulesTitle">Luật chơi Cờ Thú</h2></div><button type="button" id="closeRulesButton" class="dialog-close" aria-label="Đóng">×</button></div>
     <p>Hai đội Xanh và Đỏ lần lượt đi một quân. Đội Xanh đi trước. Đưa bất kỳ quân nào vào hang đối thủ, hoặc bắt hết quân của họ, để chiến thắng.</p>
     <ul>
+      <li>Bàn 9×9. Mỗi ván xáo ngẫu nhiên quân và các ô Rừng rậm, Nhà, Núi non, Chông trên hai bờ sông. Quân khởi đầu trên bờ của mình, không ở hang hay bẫy.</li>
       <li>Mỗi quân đi 1 ô theo chiều ngang hoặc dọc; không đi chéo và không vào hang của mình.</li>
       <li>Quân mạnh hơn hoặc bằng có thể bắt quân yếu hơn. Chuột có thể bắt Voi trên cạn, nhưng Voi không bắt được Chuột.</li>
       <li>Chỉ Chuột được xuống sông. Chuột dưới nước chỉ bắt được Chuột khác cũng ở dưới nước và không bắt quân trên cạn khi vừa lên bờ.</li>
       <li>Sư tử và Hổ có thể nhảy xuyên qua sông nếu mọi ô nước trên đường đều không có Chuột.</li>
       <li>Quân ở bẫy đối thủ bị giảm sức mạnh về bậc 0, nên có thể bị bất kỳ quân nào bắt. Thoát bẫy sẽ trở về bậc ban đầu.</li>
+      <li>Rừng rậm: Voi miễn nhiễm Chuột; Hổ +1; Mèo, Chó, Chuột −1. Nhà: Mèo, Chó, Chuột +1; thú khác −2. Núi non: Báo và Sói +1; thú khác −1.</li>
+      <li>Thú đứng trên ô địa hình cộng bậc được nhảy đúng 2 ô theo một trong 8 hướng, qua ô ở giữa. Nước đi thường vẫn được dùng. Không được đáp xuống sông nếu không phải Chuột.</li>
+      <li>Chu kỳ 4 lượt: Ngày, Ngày, Đêm, Trăng tròn. Đêm: chỉ Mèo bắt được Chuột; Sói +2, Hổ +1. Trăng tròn: Sói +3 và nhảy đúng 3 ô theo 8 hướng; Chuột trở lại quy tắc thường.</li>
+      <li>Chông: thú có bậc hiện tại từ 6 trở lên khi đáp xuống bị một vết thương vĩnh viễn −1 bậc. Dẫm chông lần nữa có thể bị thương tiếp.</li>
     </ul>
     <button type="button" id="startButton" class="primary-button">Đã hiểu, chơi thôi!</button>
   </dialog>
