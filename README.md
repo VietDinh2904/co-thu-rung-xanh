@@ -1,8 +1,11 @@
 # Cờ Thú Rừng Xanh
 
-Biến thể Cờ Thú Rừng Xanh dành cho hai người chơi cùng thiết bị hoặc trực tuyến. Bàn cờ 9 × 9 có đủ 8 loài thú cho mỗi đội, sông, bẫy, hang và địa hình thay đổi sức mạnh. Quân và ô chức năng được xáo ngẫu nhiên mỗi ván, rải đều trên hai bờ sông; quân luôn khởi đầu ở bờ của mình, ngoài hang và bẫy.
+Hai phiên bản Cờ Thú Rừng Xanh cho hai người chơi cùng thiết bị hoặc trực tuyến:
 
-**[Chơi trên GitHub Pages](https://vietdinh2904.github.io/co-thu-rung-xanh/)**
+- **[Phiên bản 1 · Đơn giản 7×9](https://vietdinh2904.github.io/co-thu-rung-xanh/simple/)** giữ luật Cờ Thú cơ bản, sông, bẫy và hang, với cách xếp quân cố định.
+- **[Phiên bản 2 · Nâng cấp 9×9](https://vietdinh2904.github.io/co-thu-rung-xanh/)** thêm địa hình, chu kỳ ngày đêm, vết thương do chông và xáo quân, ô chức năng mỗi ván.
+
+Mỗi trang có nút chuyển phiên bản. Phòng trực tuyến chỉ dùng trong đúng phiên bản được tạo; người được mời mở link phòng của phiên bản đó.
 
 ## Chơi hai người từ xa
 
@@ -14,7 +17,7 @@ Chế độ này dùng WebRTC qua [PeerJS](https://peerjs.com/) và dịch vụ 
 
 ## Chơi trên máy
 
-Chạy `npm run dev`, rồi mở `http://localhost:8000`. Chọn quân của đội đang đến lượt, rồi chọn ô được đánh dấu. Nút **Đi lại lượt trước** hoàn tác một nước; **Chơi ván mới** đặt lại bàn cờ.
+Chạy `npm run dev`, rồi mở `http://localhost:8000` cho bản nâng cấp hoặc `http://localhost:8000/simple/index.html` cho bản đơn giản. Chọn quân của đội đang đến lượt, rồi chọn ô được đánh dấu. Nút **Đi lại lượt trước** hoàn tác một nước; **Chơi ván mới** đặt lại bàn cờ.
 
 ## Kiểm tra
 
@@ -24,7 +27,7 @@ npm test
 
 Không cần cài gói phụ thuộc để chơi. Tệp `rules.js` chứa luật chơi thuần JavaScript và được kiểm tra bằng `node:test`.
 
-## Luật của biến thể
+## Luật của phiên bản nâng cấp
 
 - Bẫy quanh hang đối thủ hạ bậc quân sa vào xuống **0**; bất kỳ thú nào cũng có thể bắt. Rời bẫy sẽ phục hồi bậc theo địa hình, thời điểm và vết thương hiện có.
 - Rừng rậm: Voi miễn nhiễm Chuột; Hổ +1; Mèo, Chó, Chuột −1. Nhà: Mèo, Chó, Chuột +1; loài khác −2. Núi non: Báo, Sói +1; loài khác −1.
