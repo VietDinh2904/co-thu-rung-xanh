@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { initialPieces, isRiver, legalMoves, movePiece } from './rules.js';
+import { effectiveRank, initialPieces, isRiver, legalMoves, movePiece } from './rules.js';
 
 const piece = (team, rank, x, y) => ({ id: `${team}-${rank}`, team, rank, x, y });
 const has = (moves, x, y) => moves.some(move => move.x === x && move.y === y);
@@ -52,6 +52,8 @@ test('a trapped enemy has zero strength and restores strength after leaving', ()
   const redCat = piece('red', 2, 1, 0);
   assert.ok(has(legalMoves([trappedBlueElephant, redCat], redCat), 2, 0));
   assert.ok(!has(legalMoves([trappedBlueElephant, redCat], trappedBlueElephant), 1, 0));
+  assert.equal(effectiveRank(trappedBlueElephant), 0);
+  assert.equal(effectiveRank({ ...trappedBlueElephant, x: 1, y: 1 }), 8);
 });
 
 test('pieces cannot enter their own den; entering the enemy den wins', () => {

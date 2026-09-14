@@ -7,6 +7,7 @@
   <meta name="description" content="Cờ Thú Rừng Xanh — trò chơi chiến thuật hai người với sông, bẫy và hang." />
   <title>Cờ Thú Rừng Xanh</title>
   <link rel="stylesheet" href="./styles.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/peerjs@1.5.5/dist/peerjs.min.js" integrity="sha512-XEKeWX+mI3Ov+tg2evDlVQFzVOIp4T8J3cNcCEPaEUGpxJV3eZaN8rHuvnFPvQpGJBHPmrozJDMpm2xcDvtmyQ==" crossorigin="anonymous"></script>
   <script type="module" src="./game.js"></script>
 </head>
 <body>
@@ -44,6 +45,15 @@
             <button class="primary-button" id="newGameButton" type="button">↻ &nbsp; Chơi ván mới</button>
             <button class="secondary-button" id="undoButton" type="button" disabled>↶ &nbsp; Đi lại lượt trước</button>
           </div>
+          <div class="panel-card online-card">
+            <div class="card-heading"><span>Chơi trực tuyến</span><span>🌐</span></div>
+            <p class="online-intro">Mỗi người mở game trên máy của mình. Chủ phòng chơi đội Xanh.</p>
+            <p class="online-status" id="onlineStatus" role="status">Đang chơi cùng thiết bị</p>
+            <button class="primary-button" id="hostButton" type="button">✦ &nbsp; Tạo phòng</button>
+            <div class="join-row"><input id="roomInput" type="text" placeholder="Mã phòng hoặc link mời" aria-label="Mã phòng hoặc link mời" autocomplete="off" /><button id="joinButton" type="button">Vào</button></div>
+            <div class="invite-box" id="inviteBox" hidden><span>MỜI BẠN BÈ BẰNG LINK</span><input id="inviteLink" type="text" readonly aria-label="Link mời" /><button id="copyInviteButton" type="button">Sao chép link</button></div>
+            <button class="secondary-button leave-button" id="leaveButton" type="button" hidden>Rời phòng · Chơi cùng thiết bị</button>
+          </div>
         </aside>
 
         <section class="board-section" aria-label="Bàn cờ thú">
@@ -72,7 +82,7 @@
         </aside>
       </div>
     </main>
-    <footer>Được làm với ♡ cho những nhà thám hiểm nhỏ &nbsp;·&nbsp; Hai người chơi cùng thiết bị</footer>
+    <footer>Được làm với ♡ cho những nhà thám hiểm nhỏ &nbsp;·&nbsp; Chơi cùng thiết bị hoặc trực tuyến</footer>
   </div>
 
   <dialog id="rulesDialog" class="rules-dialog" aria-labelledby="rulesTitle">
@@ -83,7 +93,7 @@
       <li>Quân mạnh hơn hoặc bằng có thể bắt quân yếu hơn. Chuột có thể bắt Voi trên cạn, nhưng Voi không bắt được Chuột.</li>
       <li>Chỉ Chuột được xuống sông. Chuột dưới nước chỉ bắt được Chuột khác cũng ở dưới nước và không bắt quân trên cạn khi vừa lên bờ.</li>
       <li>Sư tử và Hổ có thể nhảy xuyên qua sông nếu mọi ô nước trên đường đều không có Chuột.</li>
-      <li>Quân ở bẫy đối thủ bị giảm sức mạnh về 0, nên có thể bị bất kỳ quân nào bắt.</li>
+      <li>Quân ở bẫy đối thủ bị giảm sức mạnh về bậc 0, nên có thể bị bất kỳ quân nào bắt. Thoát bẫy sẽ trở về bậc ban đầu.</li>
     </ul>
     <button type="button" id="startButton" class="primary-button">Đã hiểu, chơi thôi!</button>
   </dialog>

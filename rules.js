@@ -29,6 +29,9 @@ export function denOwner(x, y) {
   return Object.keys(DENS).find(team => sameSquare(DENS[team], x, y)) ?? null;
 }
 export function pieceAt(pieces, x, y) { return pieces.find(piece => piece.x === x && piece.y === y); }
+export function effectiveRank(piece) {
+  return trapOwner(piece.x, piece.y) && trapOwner(piece.x, piece.y) !== piece.team ? 0 : piece.rank;
+}
 
 export function initialPieces() {
   const red = [[7, 0, 0], [6, 6, 0], [5, 2, 2], [4, 1, 1], [3, 5, 1], [2, 1, 2], [1, 6, 2], [8, 0, 2]];
@@ -45,7 +48,7 @@ function canCapture(attacker, defender, from, to) {
   const toWater = isRiver(to.x, to.y);
   if (fromWater !== toWater) return false;
   if (trapOwner(to.x, to.y) === attacker.team) return true;
-  const attackerPower = trapOwner(from.x, from.y) === defender.team ? 0 : attacker.rank;
+  const attackerPower = effectiveRank({ ...attacker, x: from.x, y: from.y });
   if (attackerPower === 1 && defender.rank === 8 && !fromWater) return true;
   if (attackerPower === 8 && defender.rank === 1) return false;
   return attackerPower >= defender.rank;
