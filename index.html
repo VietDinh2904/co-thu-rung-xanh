@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f3e8" />
+  <meta name="description" content="Cờ Thú Rừng Xanh — trò chơi chiến thuật hai người với sông, bẫy và hang." />
+  <title>Cờ Thú Rừng Xanh</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script type="module" src="./game.js"></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Cờ Thú Rừng Xanh, về trang đầu">
+        <span class="brand-mark" aria-hidden="true">✿</span>
+        <span>CỜ THÚ <strong>RỪNG XANH</strong></span>
+      </a>
+      <button class="text-button" id="rulesButton" type="button">📖 &nbsp; Luật chơi</button>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="pageTitle">
+        <div class="eyebrow"><span class="eyebrow-line"></span> MỘT CUỘC PHIÊU LƯU NHO NHỎ <span class="eyebrow-line"></span></div>
+        <h1 id="pageTitle">Cờ Thú <em>Rừng Xanh</em><span class="title-spark">✦</span></h1>
+        <p>Vượt sông, tránh bẫy, bảo vệ hang và dẫn đội thú của bạn đến chiến thắng!</p>
+      </section>
+
+      <div class="game-layout">
+        <aside class="side-panel side-panel-left" aria-label="Thông tin ván chơi">
+          <div class="panel-card turn-card">
+            <span class="card-kicker">ĐẾN LƯỢT</span>
+            <div class="turn-avatar" id="turnAvatar" aria-hidden="true">🐘</div>
+            <h2 id="turnTitle">Đội Xanh</h2>
+            <p id="turnHint">Chọn một quân thú để xem đường đi.</p>
+            <span class="turn-pill" id="turnPill">LƯỢT 01</span>
+          </div>
+          <div class="panel-card captured-card">
+            <div class="card-heading"><span>Quân đã bắt</span><span class="tiny-leaf">❧</span></div>
+            <div class="capture-row"><span class="capture-team blue-dot">Xanh</span><div class="captured-list" id="blueCaptured"><span class="empty-capture">Chưa có</span></div></div>
+            <div class="capture-row"><span class="capture-team red-dot">Đỏ</span><div class="captured-list" id="redCaptured"><span class="empty-capture">Chưa có</span></div></div>
+          </div>
+          <div class="panel-card controls-card">
+            <button class="primary-button" id="newGameButton" type="button">↻ &nbsp; Chơi ván mới</button>
+            <button class="secondary-button" id="undoButton" type="button" disabled>↶ &nbsp; Đi lại lượt trước</button>
+          </div>
+        </aside>
+
+        <section class="board-section" aria-label="Bàn cờ thú">
+          <div class="board-top-label"><span class="leaf-cluster" aria-hidden="true">❧</span><span>HANG CỦA ĐỘI ĐỎ</span><span class="leaf-cluster" aria-hidden="true">❧</span></div>
+          <div class="board-frame">
+            <div class="board" id="board" role="grid" aria-label="Bàn cờ 7 cột, 9 hàng"></div>
+          </div>
+          <div class="board-bottom-label"><span class="leaf-cluster" aria-hidden="true">❧</span><span>HANG CỦA ĐỘI XANH</span><span class="leaf-cluster" aria-hidden="true">❧</span></div>
+          <p class="board-tip" id="statusMessage" role="status" aria-live="polite">Chạm vào một quân Xanh để bắt đầu cuộc phiêu lưu.</p>
+        </section>
+
+        <aside class="side-panel side-panel-right" aria-label="Hướng dẫn nhanh">
+          <div class="panel-card guide-card">
+            <span class="card-kicker">BÍ KÍP RỪNG XANH</span>
+            <h2>Chơi thế nào?</h2>
+            <div class="guide-item"><span class="guide-icon leaf-icon">↔</span><div><strong>Di chuyển</strong><p>Mỗi lượt đi 1 ô ngang hoặc dọc. Chọn quân để thấy nước đi hợp lệ.</p></div></div>
+            <div class="guide-item"><span class="guide-icon water-icon">〰</span><div><strong>Vượt sông</strong><p>Chuột bơi được. Sư tử và Hổ có thể nhảy qua sông nếu không có Chuột cản đường.</p></div></div>
+            <div class="guide-item"><span class="guide-icon trap-icon">✳</span><div><strong>Cẩn thận bẫy!</strong><p>Thú sa vào bẫy đối phương sẽ mất sức mạnh cho đến khi thoát ra.</p></div></div>
+            <div class="guide-item"><span class="guide-icon cave-icon">⌂</span><div><strong>Đến hang địch</strong><p>Vào hang đối phương hoặc bắt hết thú của họ để thắng.</p></div></div>
+          </div>
+          <div class="panel-card ranks-card">
+            <div class="card-heading"><span>Thứ bậc các thú</span><span>★</span></div>
+            <p>Mạnh → yếu, riêng Chuột bắt được Voi trên cạn.</p>
+            <div class="rank-list" id="rankList"></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <footer>Được làm với ♡ cho những nhà thám hiểm nhỏ &nbsp;·&nbsp; Hai người chơi cùng thiết bị</footer>
+  </div>
+
+  <dialog id="rulesDialog" class="rules-dialog" aria-labelledby="rulesTitle">
+    <div class="dialog-header"><div><span class="card-kicker">CẨM NANG THÁM HIỂM</span><h2 id="rulesTitle">Luật chơi Cờ Thú</h2></div><button type="button" id="closeRulesButton" class="dialog-close" aria-label="Đóng">×</button></div>
+    <p>Hai đội Xanh và Đỏ lần lượt đi một quân. Đội Xanh đi trước. Đưa bất kỳ quân nào vào hang đối thủ, hoặc bắt hết quân của họ, để chiến thắng.</p>
+    <ul>
+      <li>Mỗi quân đi 1 ô theo chiều ngang hoặc dọc; không đi chéo và không vào hang của mình.</li>
+      <li>Quân mạnh hơn hoặc bằng có thể bắt quân yếu hơn. Chuột có thể bắt Voi trên cạn, nhưng Voi không bắt được Chuột.</li>
+      <li>Chỉ Chuột được xuống sông. Chuột dưới nước chỉ bắt được Chuột khác cũng ở dưới nước và không bắt quân trên cạn khi vừa lên bờ.</li>
+      <li>Sư tử và Hổ có thể nhảy xuyên qua sông nếu mọi ô nước trên đường đều không có Chuột.</li>
+      <li>Quân ở bẫy đối thủ bị giảm sức mạnh về 0, nên có thể bị bất kỳ quân nào bắt.</li>
+    </ul>
+    <button type="button" id="startButton" class="primary-button">Đã hiểu, chơi thôi!</button>
+  </dialog>
+</body>
+</html>
