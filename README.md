@@ -2,7 +2,7 @@
 
 Hai phiên bản Cờ Thú Rừng Xanh cho hai người chơi cùng thiết bị hoặc trực tuyến:
 
-- **[Phiên bản 1 · Đơn giản 7×9](https://vietdinh2904.github.io/co-thu-rung-xanh/simple/)** giữ luật Cờ Thú cơ bản, sông, bẫy và hang, với cách xếp quân cố định.
+- **[Phiên bản 1 · Đơn giản 7×9](https://vietdinh2904.github.io/co-thu-rung-xanh/simple/index.html)** giữ luật Cờ Thú cơ bản, sông, bẫy và hang, với cách xếp quân cố định.
 - **[Phiên bản 2 · Nâng cấp 9×9](https://vietdinh2904.github.io/co-thu-rung-xanh/)** thêm địa hình, chu kỳ ngày đêm, vết thương do chông và xáo quân, ô chức năng mỗi ván.
 
 Mỗi trang có nút chuyển phiên bản. Phòng trực tuyến chỉ dùng trong đúng phiên bản được tạo; người được mời mở link phòng của phiên bản đó.
